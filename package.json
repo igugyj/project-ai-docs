@@ -1,0 +1,36 @@
+{
+  "name": "project-ai-docs",
+  "version": "0.1.0",
+  "description": "通用项目 AI 文档协议 skill：每项目一份 docs/.ai 认知库，防上下文涣散、保项目认知精细。（DSH plugin）",
+  "type": "module",
+  "main": "extensions/dsh/index.js",
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "skill",
+    "project-docs",
+    "agent-context"
+  ],
+  "license": "MIT",
+  "files": [
+    "skills",
+    "extensions",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-skill-filesystem": "^0.1.0-rc.6"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/dsh-skill-filesystem": {
+      "optional": true
+    }
+  }
+}

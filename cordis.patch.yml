@@ -1,0 +1,6 @@
+# Thin DSH bundle layer for project-ai-docs. The mounted plugin delegates
+# discovery to Harness's native filesystem provider and reads only this
+# package's canonical skills/ tree.
+- insert:
+    - id: project-ai-docs
+      name: 'project-ai-docs/extensions/dsh/index.js'

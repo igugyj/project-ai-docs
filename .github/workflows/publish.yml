@@ -1,0 +1,56 @@
+name: publish
+
+# 手动触发（Actions 页 → Run workflow）。版本增量 patch（默认）/ minor / major，
+# 或直接给显式版本号（如 1.2.3）。
+# 前置：仓库 Settings → Secrets and variables → Actions 添加 NPM_TOKEN
+#（npm 账号 access token，权限：Read and publish 或 full）。
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本增量 patch|minor|major，或显式版本号 1.2.3'
+        required: false
+        default: 'patch'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      # 推进版本：patch/minor/major 或显式版本号，不产生 git 操作
+      - name: 推进版本
+        run: npm version "${{ github.event.inputs.version }}" --no-git-tag-version
+
+      # 校验发布内容（files 白名单生效：skills/extensions/patch/README*/LICENSE）
+      - name: 校验发布包内容
+        run: npm pack --dry-run
+
+      - name: 发布到 npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # 回写版本 bump 与 tag（GITHUB_TOKEN, [skip ci] 防循环）
+      - name: 回写版本与 tag
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          if git diff --cached --quiet; then
+            echo "no version change to commit"
+          else
+            git commit -m "chore: bump version to $VERSION [skip ci]"
+            git tag "v$VERSION"
+            git push
+            git push --tags
+          fi
