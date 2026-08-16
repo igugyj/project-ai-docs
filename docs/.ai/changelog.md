@@ -85,6 +85,8 @@
   - npm 0.1.0 包即此坏文件；Aegis 技能全用 `>-` 折叠块因此不受影响
   - 修复：description 改 `>-` 折叠块（与 SKILL.en.md 对齐）
   - 验证：js-yaml 解析 OK（name=project-ai-docs，descLen=162）；user root 副本已刷新（~/.dsh/skills/project-ai-docs）
+  - 踩坑追加：`Copy-Item -Recurse -Force` 到已存在的同名目录会在其下再建一层（project-ai-docs/project-ai-docs/），顶层残留旧文件 —— 更新副本先 Remove-Item 再 Copy
+  - 验证闭环：直连 provider list() 复现（YAMLParseError → 0 条）→ 修后 1 条 user-dsh 源 → 本会话 catalog 注入出现（无需重启，host watchdog 实时重扫）
   - 后续：发 0.1.1 修复 registry 包；0.1.0 遗留（建议 deprecate）
 
 ## [初始化]
