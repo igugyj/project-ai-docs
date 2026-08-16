@@ -1,6 +1,9 @@
 ---
 name: project-ai-docs
-description: 通用项目 AI 文档协议（docs/.ai）。会话开始先读索引与变更日志再动手，改动必须回写文档，防上下文涣散、保项目认知精细。「初始化项目文档 / 生成 AI 文档 / /init」触发 Init 协议。适用任何语言/框架的项目。英文协议见 SKILL.en.md（name: project-ai-docs-en）。
+description: >-
+  通用项目 AI 文档协议（docs/.ai）。会话开始先读索引与变更日志再动手，改动必须回写文档，
+  防上下文涣散、保项目认知精细。「初始化项目文档 / 生成 AI 文档 / /init」触发 Init 协议。
+  适用任何语言/框架的项目。英文协议见 SKILL.en.md（name: project-ai-docs-en）。
 ---
 
 # Project AI Docs 协议

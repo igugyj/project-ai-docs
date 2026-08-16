@@ -80,6 +80,13 @@
   - README×2：tree 补 .github/.gitignore/.gitattributes；B 路以 registry 为标准；发布小节改 GAT + 无输入流程（顺带修编号 bug）
   - docs/.ai：index/overview/architecture/quick-start 同步发布与安装现状；AGENTS.md 文件职责补发布管道
 
+- 修致命 bug：SKILL.md frontmatter YAML 解析失败（catalog 静默缺失）
+  - 根因：description 单行 plain scalar 内含 `（name: project-ai-docs-en）` → YAML 视为嵌套 mapping → 解析抛错 → 插件 provider list() 异常被 dsh-skill 层静默吞（cacheable=false，无可见错误）→ 技能不进 catalog
+  - npm 0.1.0 包即此坏文件；Aegis 技能全用 `>-` 折叠块因此不受影响
+  - 修复：description 改 `>-` 折叠块（与 SKILL.en.md 对齐）
+  - 验证：js-yaml 解析 OK（name=project-ai-docs，descLen=162）；user root 副本已刷新（~/.dsh/skills/project-ai-docs）
+  - 后续：发 0.1.1 修复 registry 包；0.1.0 遗留（建议 deprecate）
+
 ## [初始化]
 
 ### 初始记录
