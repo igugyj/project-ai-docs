@@ -1,0 +1,12 @@
+# dependencies
+node_modules/
+
+# npm pack artifacts
+*.tgz
+
+# logs
+*.log
+
+# os
+.DS_Store
+Thumbs.db

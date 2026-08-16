@@ -1,0 +1,14 @@
+# 行尾规范化
+* text=auto
+
+# GitHub linguist 语言分析：文档类不计入语言占比
+docs/.ai/** linguist-documentation
+README.md linguist-documentation
+README.en.md linguist-documentation
+AGENTS.md linguist-documentation
+
+# 中英对应文件统一语言标签，防 zh/en 被拆成两种"语言"
+skills/project-ai-docs/SKILL.md linguist-documentation
+skills/project-ai-docs/SKILL.en.md linguist-documentation
+skills/project-ai-docs/template/** linguist-documentation
+skills/project-ai-docs/template.en/** linguist-documentation

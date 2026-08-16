@@ -50,6 +50,13 @@
   - AGENTS.md 改纯英文（agent 通用规则），删除 AGENTS.en.md
   - 引用同步：README×2 / docs（index、overview、architecture）
 
+- 新增 .gitignore（node_modules / *.tgz / *.log / .DS_Store / Thumbs.db）
+
+- 新增 .gitattributes（语言分析）
+  - `* text=auto` 行尾规范化
+  - linguist-documentation：docs/.ai、README×2、AGENTS、SKILL×2、template×2 不计语言占比
+  - 中英对应文件统一 linguist-documentation 防拆语言统计
+
 ## [初始化]
 
 ### 初始记录
