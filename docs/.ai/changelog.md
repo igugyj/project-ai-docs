@@ -57,6 +57,14 @@
   - linguist-documentation：docs/.ai、README×2、AGENTS、SKILL×2、template×2 不计语言占比
   - 中英对应文件统一 linguist-documentation 防拆语言统计
 
+- workflow 修 bug（真跑失败：显式版本与当前相同 → npm version "Version not changed"）
+  - bump 步：显式版本号与当前相同则跳过；patch/minor/major 照常 +1
+  - 新增发布前查重步：npm view 该版本已存在 → 中止（防重复发布 403）
+
+- workflow 输入改版：去掉 patch|minor|major，只收显式 x.y.z
+  - 输入校验 ^\d+\.\d+\.\d+$，非法中止；与当前相同跳过 bump（清洁重跑）
+  - README×2 发布小节同步
+
 ## [初始化]
 
 ### 初始记录

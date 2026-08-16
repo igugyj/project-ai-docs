@@ -92,7 +92,7 @@ dsh plugin --profile web rm project-ai-docs
 仓库已带 GitHub Action（`.github/workflows/publish.yml`），手动发布，版本增量可选：
 
 1. 仓库 Settings → Secrets and variables → Actions → 新建 `NPM_TOKEN`（npm 账号 access token）
-2. Actions 页 → **publish** → Run workflow → 选版本增量（patch 默认 / minor / major / 显式版本号）
-3. 流程：推进版本 → `npm pack --dry-run` 校验包内容 → `npm publish` → 回写版本 commit + `vX.Y.Z` tag
+2. Actions 页 → **publish** → Run workflow → 填目标版本号 `x.y.z`（显式，如 0.1.1）
+3. 流程：推进版本 → 查重（已发布则中止）→ `npm pack --dry-run` 校验包内容 → `npm publish` → 回写版本 commit + `vX.Y.Z` tag
 
 无需本地 npm login / publish。

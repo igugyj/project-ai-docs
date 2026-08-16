@@ -1,16 +1,16 @@
 name: publish
 
-# 手动触发（Actions 页 → Run workflow）。版本增量 patch（默认）/ minor / major，
-# 或直接给显式版本号（如 1.2.3）。
+# 手动触发（Actions 页 → Run workflow）。输入目标版本号 x.y.z（显式，如 0.1.1），
+# 与 package.json 当前版本相同则跳过 bump（清洁重跑）。
 # 前置：仓库 Settings → Secrets and variables → Actions 添加 NPM_TOKEN
 #（npm 账号 access token，权限：Read and publish 或 full）。
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: '版本增量 patch|minor|major，或显式版本号 1.2.3'
-        required: false
-        default: 'patch'
+        description: '目标版本号 x.y.z（如 0.1.1）'
+        required: true
+        default: '0.1.1'
 
 permissions:
   contents: write
@@ -26,9 +26,29 @@ jobs:
           node-version: 22
           registry-url: https://registry.npmjs.org
 
-      # 推进版本：patch/minor/major 或显式版本号，不产生 git 操作
+      # 推进到目标版本 x.y.z；输入非法 → 中止；与当前相同 → 跳过（不报错）
       - name: 推进版本
-        run: npm version "${{ github.event.inputs.version }}" --no-git-tag-version
+        run: |
+          V="${{ github.event.inputs.version }}"
+          if ! [[ "$V" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "invalid version '$V': must be x.y.z, e.g. 0.1.1" >&2
+            exit 1
+          fi
+          CURRENT=$(node -p "require('./package.json').version")
+          if [ "$V" != "$CURRENT" ]; then
+            npm version "$V" --no-git-tag-version
+          fi
+
+      # 发布前查重：该版本已在 npm 上 → 中止（防重复发布 403）
+      # 包名取 package.json name（不依赖仓库名）
+      - name: 校验版本未发布
+        run: |
+          PKG=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "${PKG}@${VERSION}" version >/dev/null 2>&1; then
+            echo "version ${VERSION} already published; re-run with a new x.y.z version" >&2
+            exit 1
+          fi
 
       # 校验发布内容（files 白名单生效：skills/extensions/patch/README*/LICENSE）
       - name: 校验发布包内容

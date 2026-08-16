@@ -87,7 +87,7 @@ Other hosts (Claude Code / Codex, etc.): copy `skills/project-ai-docs/` into the
 A GitHub Action (`.github/workflows/publish.yml`) publishes manually with a selectable version bump:
 
 1. Add an `NPM_TOKEN` secret (npms Access Tokens) under repo Settings → Secrets and variables → Actions
-2. Actions tab → **publish** → Run workflow → pick the bump (patch default / minor / major / explicit version)
-3. Flow: bump version → `npm pack --dry-run` sanity check → `npm publish` → commit the bump + tag `vX.Y.Z`
+2. Actions tab → **publish** → Run workflow → enter the target version `x.y.z` (explicit, e.g. 0.1.1)
+3. Flow: bump version → duplicate check (abort if already published) → `npm pack --dry-run` sanity check → `npm publish` → commit the bump + tag `vX.Y.Z`
 
 No local npm login / publish needed.
