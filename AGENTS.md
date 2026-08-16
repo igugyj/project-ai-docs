@@ -15,5 +15,7 @@ This project runs the `project-ai-docs` protocol on itself (dogfood). All agents
    - `skills/project-ai-docs/SKILL.en.md` = English protocol variant (swap-in: rename over SKILL.md to use; not discovered as a separate skill)
    - `skills/project-ai-docs/template/` = Init scaffold (Chinese); `template.en/` = scaffold (English) — the only layer allowed placeholders
    - `README.md` / `README.en.md` = for human users (ZH / EN)
+   - `.github/workflows/publish.yml` = npm publishing pipeline (manual trigger, workflow_dispatch)
+   - `.gitignore` / `.gitattributes` = git ignore rules / linguist language analysis
    - `docs/.ai/` = this package's own KB (protocol self-description)
    - The runtime skill unit = `skills/project-ai-docs/` (plugin discovery root, pointed at by `extensions/dsh/index.js`)

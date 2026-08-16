@@ -28,6 +28,9 @@ project-ai-docs/
 ├── cordis.patch.yml          # bundle registration
 ├── package.json              # npm manifest (dsh.bundle.patch)
 ├── AGENTS.md                 # project agent rules (English, agent-facing)
+├── .gitignore                # git ignore (node_modules / *.tgz / *.log)
+├── .gitattributes            # linguist analysis + line-ending normalization
+├── .github/workflows/publish.yml  # npm publishing pipeline (manual trigger)
 ├── README.md                 # Chinese readme
 ├── README.en.md              # this file
 ├── LICENSE                   # MIT
@@ -56,8 +59,8 @@ Remove-Item -Recurse "$env:USERPROFILE\.dsh\skills\project-ai-docs"
 ### B: Install via dsh plugin
 
 ```powershell
-dsh plugin --profile web add file:D:\Desktop\project-ai-docs   # local verification
-dsh plugin --profile web add project-ai-docs                    # after npm publish
+dsh plugin --profile web add project-ai-docs                    # standard: from npm registry (0.1.0 published)
+dsh plugin --profile web add file:D:\Desktop\project-ai-docs   # local pre-release verification
 dsh plugin --profile web up project-ai-docs                     # update
 dsh plugin --profile web rm project-ai-docs                     # remove
 ```
@@ -84,10 +87,14 @@ Other hosts (Claude Code / Codex, etc.): copy `skills/project-ai-docs/` into the
 
 ## Publishing (Manual)
 
-A GitHub Action (`.github/workflows/publish.yml`) publishes manually with a selectable version bump:
+A GitHub Action (`.github/workflows/publish.yml`) publishes the current `package.json` version on manual trigger:
 
-1. Add an `NPM_TOKEN` secret (npms Access Tokens) under repo Settings → Secrets and variables → Actions
-2. Actions tab → **publish** → Run workflow → enter the target version `x.y.z` (explicit, e.g. 0.1.1)
-3. Flow: bump version → duplicate check (abort if already published) → `npm pack --dry-run` sanity check → `npm publish` → commit the bump + tag `vX.Y.Z`
+1. Create an npm **Granular Access Token (GAT)** for CI (skips OTP; npm is restricting bypass-2FA tokens for direct publishing, GAT is the recommended path):
+   - Web: npmjs.com → Access Tokens → Generate New Token → **Granular Access Token**
+   - Grant `Publish packages` + expiry; verify 2FA once at creation, then publishing needs no OTP
+2. Add an `NPM_TOKEN` secret (that token) under repo Settings → Secrets and variables → Actions
+3. Bump locally and commit: `npm version 0.1.1` (or edit package.json) → git commit/push
+4. Actions tab → **publish** → Run workflow (no inputs; publishes the current package.json version)
+5. Flow: read version → duplicate check (abort if already published) → `npm pack --dry-run` sanity check → `npm publish` → tag `vX.Y.Z` and push
 
 No local npm login / publish needed.

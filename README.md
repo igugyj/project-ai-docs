@@ -28,6 +28,9 @@ project-ai-docs/
 ├── cordis.patch.yml          # bundle 注册
 ├── package.json              # npm 包清单（dsh.bundle.patch）
 ├── AGENTS.md                 # 项目级 agent 规则（英文，agent 通用）
+├── .gitignore                # git 忽略（node_modules / *.tgz / *.log）
+├── .gitattributes            # linguist 语言分析 + 行尾规范化
+├── .github/workflows/publish.yml  # npm 发布管道（手动触发）
 ├── README.md                 # 本文件（中文）
 ├── README.en.md              # 英文说明
 ├── LICENSE                   # MIT
@@ -56,11 +59,11 @@ Remove-Item -Recurse "$env:USERPROFILE\.dsh\skills\project-ai-docs"
 ### B：dsh plugin 安装（随 profile 管理）
 
 ```powershell
-# 本地目录安装（验证用）
-dsh plugin --profile web add file:D:\Desktop\project-ai-docs
-
-# npm 发布后从 registry 安装
+# 标准：从 npm registry 安装（已发布 project-ai-docs@0.1.0）
 dsh plugin --profile web add project-ai-docs
+
+# 本地预发验证（未发布改动测试用）
+dsh plugin --profile web add file:D:\Desktop\project-ai-docs
 
 # 更新 / 卸载
 dsh plugin --profile web up project-ai-docs
@@ -89,10 +92,14 @@ dsh plugin --profile web rm project-ai-docs
 
 ## 发布（手动）
 
-仓库已带 GitHub Action（`.github/workflows/publish.yml`），手动发布，版本增量可选：
+仓库已带 GitHub Action（`.github/workflows/publish.yml`），手动触发，发布 `package.json` 当前版本：
 
-1. 仓库 Settings → Secrets and variables → Actions → 新建 `NPM_TOKEN`（npm 账号 access token）
-2. Actions 页 → **publish** → Run workflow → 填目标版本号 `x.y.z`（显式，如 0.1.1）
-3. 流程：推进版本 → 查重（已发布则中止）→ `npm pack --dry-run` 校验包内容 → `npm publish` → 回写版本 commit + `vX.Y.Z` tag
+1. 生成 npm **Granular Access Token（GAT）**（CI 用，免 OTP；npm 正限制 bypass-2FA token 直发，GAT 是官方推荐）：
+   - 网页：npmjs.com → Access Tokens → Generate New Token → **Granular Access Token**
+   - 选 `Publish packages` 权限 + 过期时长；生成时 2FA 验证一次，之后发布免 OTP
+2. 仓库 Settings → Secrets and variables → Actions → 新建 `NPM_TOKEN`，值粘贴该 token
+3. 本地改好版本并提交：`npm version 0.1.1`（或手改 package.json）→ git commit/push
+4. Actions 页 → **publish** → Run workflow（无输入，发布 package.json 当前版本）
+5. 流程：读版本 → 查重（已发布则中止）→ `npm pack --dry-run` 校验包内容 → `npm publish` → 打 `vX.Y.Z` tag 推回
 
 无需本地 npm login / publish。

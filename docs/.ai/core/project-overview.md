@@ -4,6 +4,7 @@
 
 - **类型**：DSH skill 包（纯文档，无代码、无依赖、无构建）
 - **安装形态**：目录放入 DSH skill 发现路径；或 npm 插件经 `dsh plugin add`
+- **发布**：npm `project-ai-docs` v0.1.0 已发布（GitHub Actions 手动触发）；本机 web profile 已装 registry 版
 - **协议**：`SKILL.md`（中文）为权威；`SKILL.en.md` 为英文版；`template/` 为 Init 骨架
 
 ## 组成
@@ -18,6 +19,8 @@
 | `README.md` / `README.en.md` | 给人类用户的说明（中/英） |
 | `AGENTS.md` | 项目级 agent 规则（英文，dogfood 协议） |
 | `docs/.ai/` | 本包自身认知库（协议自述） |
+| `.github/workflows/publish.yml` | npm 发布管道（手动触发，无输入） |
+| `.gitignore` / `.gitattributes` | git 忽略规则 / linguist 语言分析 |
 | `LICENSE` | MIT |
 
 ## 关键功能
@@ -26,6 +29,7 @@
 2. **Init**：扫描项目信号 → 复制 template 骨架 → 实测填充 → 校验出处
 3. **Dogfood**：本包自身用协议管理自己（AGENTS.md 强制）
 4. **双语**：SKILL/README/template 各两版（中英分文件），AGENTS 单英文（agent 通用）；英文协议为替换式备用，命令与路径保持原样
+5. **发布管道**：GitHub Actions 手动触发 → 读版本 → 查重 → pack 校验 → publish → tag（GAT token 免 OTP）
 
 ## 维护入口
 

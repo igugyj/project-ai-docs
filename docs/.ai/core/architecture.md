@@ -10,9 +10,21 @@
 自述层   README(+en) + docs/.ai           — 给用户/agent 看本包自身是什么
 分发层   package.json + cordis.patch.yml + extensions/dsh/index.js
                                           — npm 包 + DSH bundle 适配（provider 指向 skills/）
+          .github/workflows/publish.yml   — npm 发布管道（手动触发）
+          .gitignore / .gitattributes     — git 忽略 / linguist 分析
 ```
 
 `AGENTS.md`（英文）把协议层强制为项目规则，形成 dogfood 闭环。
+
+## 发布流
+
+```
+本地 npm version x.y.z → commit/push
+  → GitHub Actions 手动 Run publish
+  → 读版本 → npm view 查重（已发布则中止）
+  → npm pack --dry-run 校验 → npm publish（NPM_TOKEN = GAT，免 OTP）
+  → vX.Y.Z tag 推回
+```
 
 ## 发现流（插件式安装）
 
@@ -23,6 +35,8 @@ dsh plugin add project-ai-docs
   → extensions/dsh/index.js apply(ctx)
   → applyFilesystemProvider({ bundledSkillDir: <包>/skills, watch: false })
   → ctx.skills 注册：project-ai-docs（中文协议；SKILL.en.md 位于 bundle 子目录，不参与发现，替换式使用）
+
+当前状态：本机 web profile 已装 registry 版 project-ai-docs@0.1.0（旧 file: 副本已删，重启 DSH 生效）。
 ```
 
 ## 数据流（Init 流程）

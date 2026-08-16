@@ -2,7 +2,7 @@
 
 ## 项目类型
 
-DSH skill 包：通用项目 AI 文档协议（`SKILL.md`）+ Init 骨架（`template/`）。纯文档项目，无代码、无依赖、无构建。中英双语（分文件）：`README.en.md` / `SKILL.en.md` / `AGENTS.en.md`。
+DSH skill 包：通用项目 AI 文档协议（`SKILL.md`）+ Init 骨架（`template/`）。纯文档项目，无代码、无依赖、无构建。中英双语（分文件）：`README.en.md` / `SKILL.en.md`。npm 已发布：`project-ai-docs@0.1.0`（GitHub Actions 手动发布）；本机 web profile 已装 registry 版。
 
 ## 文档结构
 
@@ -14,6 +14,8 @@ DSH skill 包：通用项目 AI 文档协议（`SKILL.md`）+ Init 骨架（`tem
 | `README.md` / `README.en.md` | 给用户的用法说明（中/英，安装 A/B 两路） |
 | `AGENTS.md` | 项目级 agent 规则（英文，agent 通用） |
 | `package.json` / `cordis.patch.yml` / `extensions/` | npm 包 + DSH bundle 适配层 |
+| `.github/workflows/publish.yml` | npm 发布管道（手动触发，免 OTP：GAT token） |
+| `.gitignore` / `.gitattributes` | git 忽略 / linguist 语言分析 |
 
 ## 关键约束（红线）
 

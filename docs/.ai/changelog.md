@@ -65,6 +65,21 @@
   - 输入校验 ^\d+\.\d+\.\d+$，非法中止；与当前相同跳过 bump（清洁重跑）
   - README×2 发布小节同步
 
+- workflow 再简：去掉输入与 bump，直接发布 package.json 当前版本
+  - 流程：读版本 → 查重 → pack --dry-run → publish → vX.Y.Z tag 推回
+  - 版本号在本地改好提交（npm version x.y.z → commit）；README×2 同步
+
+- 真跑失败 EOTP（2FA 账号 publish 需 OTP，CI 无法输入）
+  - 解法：NPM_TOKEN 用 npm automation token（免 OTP，CI 官方场景）
+  - README×2 发布小节注明生成步骤
+
+- npm 发布完成 + 本机换装 + 全量文档同步现状
+  - npm `project-ai-docs@0.1.0` 发布成功（GitHub Actions 手动触发，GAT 免 OTP）
+  - token 最终方案：Granular Access Token（GAT，网页生成；`npm token create --type=automation` 无效，--type 非 CLI 选项；npm 正限制 bypass-2FA token 直发）
+  - 本机 dsh web profile：删旧 file: 副本 → 装 registry 版 0.1.0（验证：plugin list + 包内容完整）
+  - README×2：tree 补 .github/.gitignore/.gitattributes；B 路以 registry 为标准；发布小节改 GAT + 无输入流程（顺带修编号 bug）
+  - docs/.ai：index/overview/architecture/quick-start 同步发布与安装现状；AGENTS.md 文件职责补发布管道
+
 ## [初始化]
 
 ### 初始记录

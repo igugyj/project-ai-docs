@@ -12,11 +12,13 @@
 2. 备用根：`~/.agents/skills/`、项目级 `<项目根>/.dsh/skills/`
 3. filesystem provider 常驻监听，一般无需重启；未出现则重启 DSH
 
-**B：dsh plugin（随 profile 管理）**
+**B：dsh plugin（随 profile 管理，推荐）**
 ```bash
-dsh plugin --profile web add file:本包根目录   # 本地验证
-dsh plugin --profile web add project-ai-docs  # npm 发布后
+dsh plugin --profile web add project-ai-docs  # npm registry 标准安装
+dsh plugin --profile web add file:本包根目录   # 本地预发验证用
 ```
+
+当前状态：npm `project-ai-docs@0.1.0` 已发布；本机 web profile 已装 registry 版（重启 DSH 生效）。
 
 验证：新会话 skill 目录出现 `project-ai-docs`（中文协议；英文协议按 README 替换式启用）。
 
@@ -43,3 +45,4 @@ cp -r skills/project-ai-docs/template/ <项目根>/docs/.ai/
 - **READ ME 还是 AGENTS.md？** 两者：README 给人，AGENTS.md 给 agent（人机分离法则）
 - **中英协议选哪个？** 默认 `project-ai-docs`（中文）；要英文协议：`SKILL.en.md` 改名覆盖 `SKILL.md`（frontmatter name 同步改回 `project-ai-docs`）
 - **文档太多怎么办？** 维护法则：常读薄、细节链源码、best-practices 只记稳定事实
+- **怎么发新版？** 本地 `npm version x.y.z` → commit/push → GitHub Actions 手动 Run `publish`（前置：`NPM_TOKEN` = Granular Access Token，免 OTP）
