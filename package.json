@@ -1,6 +1,6 @@
 {
   "name": "project-ai-docs",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "通用项目 AI 文档协议 skill：每项目一份 docs/.ai 认知库，防上下文涣散、保项目认知精细。（DSH plugin）",
   "type": "module",
   "main": "extensions/dsh/index.js",
@@ -26,7 +26,7 @@
     }
   },
   "peerDependencies": {
-    "@deepseek-ai/dsh-skill-filesystem": "^0.1.0-rc.6"
+	"@deepseek-ai/dsh-skill-filesystem": ">=0.1.0-rc.6"
   },
   "peerDependenciesMeta": {
     "@deepseek-ai/dsh-skill-filesystem": {
